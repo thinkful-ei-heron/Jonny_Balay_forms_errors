@@ -57,7 +57,6 @@ class App extends Component {
                 handleNoteSubmit: this.handleNoteSubmit,
                 noteAdding: false
             }}>
-
                 <div className="App">
                     <div className="App-header">
                         <Link to='/'>Noteful </Link>
