@@ -35,7 +35,7 @@ class NotesList extends Component {
         <input value={this.state.noteName} type="text" name="notename" onChange={e => this.handleAddNote(e.target.value)}/>
         <label htmlFor='notename'>Name of note <p>{this.validateName()}</p></label>
         {currentFolderID ? '' : 
-             <><label htmlFor="pickfolder">Pick folder:</label> 
+             <><label htmlFor="pickfolder">Pick a folder:</label> 
             <select name="pickfolder" onChange={e => this.handleFolderSelect(e.target.selectedIndex)}>
             {this.context.folders.map(itm => <option id={itm.id} key={itm.id}>{itm.name}</option>)}
             </select></>}
