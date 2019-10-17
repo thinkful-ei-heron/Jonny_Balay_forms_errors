@@ -5,6 +5,7 @@ import FolderList from "../FolderList/FolderList";
 import NoteList from "../NoteList/NoteList";
 import DetailedNote from "../DetailedNote/DetailedNote";
 import NotefulContext from '../NotefulContext';
+import ErrorPage from '../ErrorPage/ErrorPage'
 
 class App extends Component {
     state = {
@@ -57,6 +58,7 @@ class App extends Component {
                 handleNoteSubmit: this.handleNoteSubmit,
                 noteAdding: false
             }}>
+                <ErrorPage>
                 <div className="App">
                     <div className="App-header">
                         <Link to='/'>Noteful </Link>
@@ -92,6 +94,7 @@ class App extends Component {
                         </Switch>
                     </div>
                 </div>
+                </ErrorPage>
             </NotefulContext.Provider>
         )
     }
