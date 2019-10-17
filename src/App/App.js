@@ -14,25 +14,36 @@ class App extends Component {
 
 
     componentDidMount() {
-        fetch('http://localhost:9090/folders').then(res => res.json()).then(data => this.setState({folders: data}));
+        this.getFolders();
         fetch('http://localhost:9090/notes').then(res => res.json()).then(data => this.setState({notes: data}));
     }
 
     deleteNote = (id) => {
-
         fetch(`http://localhost:9090/notes/${id}`, {
             method: 'DELETE'
         }).then(() => this.setState({notes: this.state.notes.filter(note => note.id !== id)}));
     };
+
+    handleFolderSubmit = (e, str,) => {
+        e.preventDefault();
+        fetch('http://localhost:9090/folders', {
+            method: 'POST',
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify({name: str})
+        }).then(() => this.getFolders());
+    };
+
+    getFolders = () => fetch('http://localhost:9090/folders').then(res => res.json()).then(data => this.setState({folders: data}));
 
     render() {
         return (
             <NotefulContext.Provider value={{
                 notes: this.state.notes,
                 folders: this.state.folders,
-                deleteNote: this.deleteNote
+                addFolder: false,
+                deleteNote: this.deleteNote,
+                handleFolderSubmit: this.handleFolderSubmit
             }}>
-
 
                 <div className="App">
                     <div className="App-header">
