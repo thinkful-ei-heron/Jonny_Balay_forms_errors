@@ -35,6 +35,17 @@ class App extends Component {
 
     getFolders = () => fetch('http://localhost:9090/folders').then(res => res.json()).then(data => this.setState({folders: data}));
 
+    handleNoteSubmit = (e, nameStr, contentStr, folderId) => {
+        e.preventDefault();
+        fetch('http://localhost:9090/notes', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json'},
+            body: JSON.stringify({name: nameStr, content: contentStr, folderId: folderId, modified: new Date().toJSON()})
+        }).then(() => this.getNotes());
+    }
+
+    getNotes = () => fetch('http://localhost:9090/notes').then(res => res.json().then(data => this.setState({notes: data})))
+
     render() {
         return (
             <NotefulContext.Provider value={{
@@ -42,7 +53,9 @@ class App extends Component {
                 folders: this.state.folders,
                 addFolder: false,
                 deleteNote: this.deleteNote,
-                handleFolderSubmit: this.handleFolderSubmit
+                handleFolderSubmit: this.handleFolderSubmit,
+                handleNoteSubmit: this.handleNoteSubmit,
+                noteAdding: false
             }}>
 
                 <div className="App">
@@ -78,8 +91,6 @@ class App extends Component {
                                    />}/>
                             <Route exact path='/' render={(routeProps) => <NoteList/>}/>
                         </Switch>
-
-                        <button> Add Note</button>
                     </div>
                 </div>
             </NotefulContext.Provider>
