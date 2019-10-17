@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import '../App/App.css';
 import './Note.css';
 import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
 
 class Note extends Component {
 
@@ -18,5 +19,10 @@ class Note extends Component {
         );
     }
 }
-
+Note.propTypes = {
+    id: PropTypes.string,
+    name: PropTypes.string,
+    content: PropTypes.string,
+    deleteNote: PropTypes.func,
+};
 export default Note;

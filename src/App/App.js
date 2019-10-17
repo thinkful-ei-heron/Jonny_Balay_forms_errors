@@ -13,7 +13,6 @@ class App extends Component {
         folders: [],
     };
 
-
     componentDidMount() {
         this.getFolders();
         fetch('http://localhost:9090/notes').then(res => res.json()).then(data => this.setState({notes: data}));
@@ -25,7 +24,7 @@ class App extends Component {
         }).then(() => this.setState({notes: this.state.notes.filter(note => note.id !== id)}));
     };
 
-    handleFolderSubmit = (e, str,) => {
+    handleFolderSubmit = (e, str) => {
         e.preventDefault();
         fetch('http://localhost:9090/folders', {
             method: 'POST',
@@ -43,7 +42,7 @@ class App extends Component {
             headers: { 'content-type': 'application/json'},
             body: JSON.stringify({name: nameStr, content: contentStr, folderId: folderId, modified: new Date().toJSON()})
         }).then(() => this.getNotes());
-    }
+    };
 
     getNotes = () => fetch('http://localhost:9090/notes').then(res => res.json().then(data => this.setState({notes: data})))
 

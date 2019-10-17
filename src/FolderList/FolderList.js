@@ -3,6 +3,7 @@ import '../App/App.css';
 import './FolderList.css';
 import {Link} from "react-router-dom";
 import NotefulContext from '../NotefulContext';
+import PropTypes from "prop-types";
 
 class FolderList extends Component {
     static contextType = NotefulContext;
@@ -15,7 +16,6 @@ class FolderList extends Component {
         this.context.addFolder = !this.context.addFolder;
         this.setState({});
     };
-    errorHandler = () => (this.state.folderName.trim() === '');
     emptyFolder = () => this.setState({folderName: ''});
     validateFolderName = () => (this.state.folderName.trim() === '') ? 'Please Enter A Folder Name' : undefined;
     render() {
@@ -39,5 +39,7 @@ class FolderList extends Component {
             </>);
     }
 }
-
+FolderList.propTypes = {
+    id: PropTypes.string
+};
 export default FolderList;
