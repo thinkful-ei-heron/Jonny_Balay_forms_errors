@@ -9,11 +9,13 @@ class NotesList extends Component {
     state = {
         noteName: '',
         noteContent: '',
-        folderId: ''
+        folderId: '',
+        nameTouched: false,
+        contentTouched: false
     };
 
-    handleAddNote = (str) => this.setState({noteName: str});
-    handleAddContent = (str) => this.setState({noteContent: str});
+    handleAddNote = (str) => this.setState({noteName: str, nameTouched: true});
+    handleAddContent = (str) => this.setState({noteContent: str, contentTouched: true});
     handleFolderSelect = (index) => {
        const folderId = this.context.folders[index].id
        this.setState({folderId: folderId})
@@ -33,14 +35,14 @@ class NotesList extends Component {
             onSubmit={currentFolderID ? e => this.context.handleNoteSubmit(e, this.state.noteName, this.state.noteContent, currentFolderID) : e => this.context.handleNoteSubmit(e, this.state.noteName, this.state.noteContent, this.state.folderId)}
         >
         <input value={this.state.noteName} type="text" name="notename" onChange={e => this.handleAddNote(e.target.value)}/>
-        <label htmlFor='notename'>Name of note <p>{this.validateName()}</p></label>
+    <label htmlFor='notename'>Name of note {this.state.nameTouched && <p>{this.validateName()}</p>}</label>
         {currentFolderID ? '' : 
              <><label htmlFor="pickfolder">Pick a folder:</label> 
             <select name="pickfolder" onChange={e => this.handleFolderSelect(e.target.selectedIndex)}>
             {this.context.folders.map(itm => <option id={itm.id} key={itm.id}>{itm.name}</option>)}
             </select></>}
         <textarea value={this.state.noteContent} name="notecontent" onChange={e => this.handleAddContent(e.target.value)}/>
-        <label htmlFor="notecontent">Content <p>{this.validateContent()}</p></label>
+    <label htmlFor="notecontent">Content {this.state.contentTouched && <p>{this.validateContent()}</p>}</label>
         <button type="submit" disabled={this.validateName() || this.validateContent()}>Submit</button>
         </form>
 

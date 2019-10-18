@@ -9,9 +9,10 @@ class FolderList extends Component {
     static contextType = NotefulContext;
     state = {
         folderName: '',
+        touched: false
     };
 
-    handleAddFolder = (str) => this.setState({folderName: str});
+    handleAddFolder = (str) => this.setState({folderName: str, touched: true});
     toggleAddFolder = () => {
         this.context.addFolder = !this.context.addFolder;
         this.setState({});
@@ -24,7 +25,7 @@ class FolderList extends Component {
             this.context.handleFolderSubmit(e, this.state.folderName);
             this.emptyFolder()}}>
             <input type='text' value={this.state.folderName} onChange={e => this.handleAddFolder(e.target.value)}/>
-            <label >FolderName<p className='error'>{this.validateFolderName()}</p></label>
+        <label >FolderName{this.state.touched && <p className='error'>{this.validateFolderName()}</p>}</label>
             <button disabled={this.validateFolderName()} type='submit'>Submit</button>
         </form>) : (<button onClick={this.toggleAddFolder}> Add Folder</button>);
 
@@ -40,6 +41,6 @@ class FolderList extends Component {
     }
 }
 FolderList.propTypes = {
-    id: PropTypes.string
+    id: PropTypes.string.isRequired
 };
 export default FolderList;

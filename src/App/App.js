@@ -14,7 +14,7 @@ class App extends Component {
     };
 
     componentDidMount() {
-        this.getFolders();
+        fetch('http://localhost:9090/folders').then(res => res.json()).then(data => this.setState({folders: data}));
         fetch('http://localhost:9090/notes').then(res => res.json()).then(data => this.setState({notes: data}));
     }
 
@@ -30,22 +30,31 @@ class App extends Component {
             method: 'POST',
             headers: {'content-type': 'application/json'},
             body: JSON.stringify({name: str})
-        }).then(() => this.getFolders());
+        })
+            .then(res => res.json())
+            .then(newFolder => {
+                this.setState({
+                    folders: [...this.state.folders, newFolder]
+                })
+            })
     };
 
-    getFolders = () => fetch('http://localhost:9090/folders').then(res => res.json()).then(data => this.setState({folders: data}));
-
+    
     handleNoteSubmit = (e, nameStr, contentStr, folderId) => {
         e.preventDefault();
         fetch('http://localhost:9090/notes', {
             method: 'POST',
             headers: { 'content-type': 'application/json'},
             body: JSON.stringify({name: nameStr, content: contentStr, folderId: folderId, modified: new Date().toJSON()})
-        }).then(() => this.getNotes());
+        })
+            .then(res => res.json())
+            .then(newNote => {
+                this.setState({
+                    notes: [...this.state.notes, newNote]
+                })
+            })
     };
-
-    getNotes = () => fetch('http://localhost:9090/notes').then(res => res.json().then(data => this.setState({notes: data})))
-
+    
     render() {
         return (
             <NotefulContext.Provider value={{

@@ -20,9 +20,9 @@ class Note extends Component {
     }
 }
 Note.propTypes = {
-    id: PropTypes.string,
-    name: PropTypes.string,
-    content: PropTypes.string,
-    deleteNote: PropTypes.func,
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    deleteNote: PropTypes.func.isRequired,
 };
 export default Note;
