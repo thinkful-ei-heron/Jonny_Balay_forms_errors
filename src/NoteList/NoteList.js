@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import '../App/App.css';
 import Note from "../Note/Note";
 import NotefulContext from '../NotefulContext';
+import './NoteList.css'
+
 
 class NotesList extends Component {
     static contextType= NotefulContext;
@@ -13,11 +15,25 @@ class NotesList extends Component {
         nameTouched: false,
         contentTouched: false
     };
-
+    componentDidMount() {
+        if (this.props.folderId) {
+            this.setState({folderId: this.props.folderId})
+        }
+    }
+    handleNoteSubmit = (e, nameStr, contentStr, folderId) => {
+        this.context.handleNoteSubmit(e, nameStr, contentStr, folderId);
+        this.setState({
+            noteName: '',
+            noteContent: '',
+            folderId: '',
+            nameTouched: false,
+            contentTouched: false
+        })
+    }
     handleAddNote = (str) => this.setState({noteName: str, nameTouched: true});
     handleAddContent = (str) => this.setState({noteContent: str, contentTouched: true});
     handleFolderSelect = (index) => {
-       const folderId = this.context.folders[index].id
+    const folderId = this.context.folders[index - 1].id
        this.setState({folderId: folderId})
     }
     togglenoteAdding = (e) => {
@@ -32,17 +48,17 @@ class NotesList extends Component {
 
         const addNoteForm = 
         <form 
-            onSubmit={currentFolderID ? e => this.context.handleNoteSubmit(e, this.state.noteName, this.state.noteContent, currentFolderID) : e => this.context.handleNoteSubmit(e, this.state.noteName, this.state.noteContent, this.state.folderId)}
+            onSubmit={e => this.handleNoteSubmit(e, this.state.noteName, this.state.noteContent, this.state.folderId)}
         >
+        <label htmlFor='notename'>Name of note: {this.state.nameTouched && <p>{this.validateName()}</p>}</label>
         <input value={this.state.noteName} type="text" name="notename" onChange={e => this.handleAddNote(e.target.value)}/>
-    <label htmlFor='notename'>Name of note {this.state.nameTouched && <p>{this.validateName()}</p>}</label>
-        {currentFolderID ? '' : 
-             <><label htmlFor="pickfolder">Pick a folder:</label> 
-            <select name="pickfolder" onChange={e => this.handleFolderSelect(e.target.selectedIndex)}>
-            {this.context.folders.map(itm => <option id={itm.id} key={itm.id}>{itm.name}</option>)}
-            </select></>}
+    <label htmlFor="pickfolder">Pick a folder:</label> 
+        <select name="pickfolder" onChange={e => this.handleFolderSelect(e.target.selectedIndex)}>
+        <option value="">Select an option...</option>
+    {this.context.folders.map(itm => <option id={itm.id} key={itm.id} selected={currentFolderID === itm.id && 'selected'}>{itm.name}</option>)}
+        </select>
+        <label htmlFor="notecontent">Content: {this.state.contentTouched && <p>{this.validateContent()}</p>}</label>
         <textarea value={this.state.noteContent} name="notecontent" onChange={e => this.handleAddContent(e.target.value)}/>
-    <label htmlFor="notecontent">Content {this.state.contentTouched && <p>{this.validateContent()}</p>}</label>
         <button type="submit" disabled={this.validateName() || this.validateContent()}>Submit</button>
         </form>
 
@@ -51,10 +67,10 @@ class NotesList extends Component {
             notes = this.context.notes.filter((note) => note.folderId === (currentFolderID));
         }
         return <>
+        {this.context.noteAdding ? addNoteForm : <button onClick={this.togglenoteAdding}>Add Note</button>}
             {notes.map(note =>
                 <Note key={note.id} id={note.id} name={note.name} deleteNote={this.context.deleteNote} content={note.modified}/>
             )}
-            {this.context.noteAdding ? addNoteForm : <button onClick={this.togglenoteAdding}>Add Note</button>}
         </>;
     }
 }

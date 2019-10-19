@@ -1,0 +1,17 @@
+* {
+    font-size: 1em;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+button {
+    margin-top: 5px;
+}

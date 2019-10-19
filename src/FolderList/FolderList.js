@@ -41,6 +41,6 @@ class FolderList extends Component {
     }
 }
 FolderList.propTypes = {
-    id: PropTypes.string.isRequired
+    id: PropTypes.string
 };
 export default FolderList;
