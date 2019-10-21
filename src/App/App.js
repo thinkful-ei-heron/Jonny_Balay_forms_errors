@@ -6,6 +6,7 @@ import NoteList from "../NoteList/NoteList";
 import DetailedNote from "../DetailedNote/DetailedNote";
 import NotefulContext from '../NotefulContext';
 import ErrorPage from '../ErrorPage/ErrorPage'
+import Header from '../Header'
 
 class App extends Component {
     state = {
@@ -69,8 +70,11 @@ class App extends Component {
                 <ErrorPage>
                 <div className="App">
                     <div className="App-header">
-                        <Link to='/'>Noteful </Link>
-
+                        {/* <Link to='/' >Noteful </Link> */}
+                        <Route 
+                            path='/'
+                            component={Header}
+                        />
                     </div>
                     <div className='SideNav'>
                         <Switch>

@@ -12,6 +12,11 @@ class FolderList extends Component {
         touched: false
     };
 
+    toggleNoteAdding = (e) => {
+        if (this.context.noteAdding) {
+        this.context.noteAdding = !this.context.noteAdding;
+        }
+    }
     handleAddFolder = (str) => this.setState({folderName: str, touched: true});
     toggleAddFolder = () => {
         this.context.addFolder = !this.context.addFolder;
@@ -33,7 +38,7 @@ class FolderList extends Component {
             <>
                 {this.context.folders.map((folder) => {
                     return (<div key={folder.id} className={(folder.id === this.props.id) ? 'background' : ''}><Link
-                        key={folder.id} to={'/folders/' + folder.id}>{folder.name}</Link></div>);
+                        key={folder.id} to={'/folders/' + folder.id} onClick={this.toggleNoteAdding}>{folder.name}</Link></div>);
                 })
                 }
                 {addFolder}
